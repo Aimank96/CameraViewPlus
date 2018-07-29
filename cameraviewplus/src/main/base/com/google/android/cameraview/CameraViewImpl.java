@@ -42,7 +42,7 @@ public abstract class CameraViewImpl implements SensorEventListener {
     protected OnCameraErrorListener cameraErrorCallback;
     protected OnFocusLockedListener focusLockedCallback;
     protected OnFrameListener onFrameCallback;
-
+    protected OnPictureTakenListenerForByteArray pictureTakenCallbackForByteArray;
     protected final PreviewImpl mPreview;
 
     protected int maximumWidth = 0;
@@ -81,6 +81,10 @@ public abstract class CameraViewImpl implements SensorEventListener {
 
     public void setOnPictureTakenListener (OnPictureTakenListener pictureCallback) {
         this.pictureCallback = pictureCallback;
+    }
+
+    public void setPictureTakenForByteArray (OnPictureTakenListenerForByteArray pictureTakennForByteArray){
+        this.pictureTakenCallbackForByteArray = pictureTakennForByteArray;
     }
 
     public void setOnFocusLockedListener (OnFocusLockedListener focusLockedListener) {
@@ -154,21 +158,28 @@ public abstract class CameraViewImpl implements SensorEventListener {
     }
 
     protected void byteArrayToBitmap (final byte[] data) {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inMutable = true;
-                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
-                if (getFacing() == CameraView.FACING_FRONT) {
-                    if (pictureCallback != null) pictureCallback.onPictureTaken(mirrorBitmap(bitmap),
-                            -(orientationCalculator.getOrientation() + getCameraDefaultOrientation()));
-                } else {
-                    if (pictureCallback != null) pictureCallback.onPictureTaken(bitmap,
-                            -(orientationCalculator.getOrientation() + getCameraDefaultOrientation()));
+
+        if(pictureCallback != null) {
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inMutable = true;
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
+                    if (getFacing() == CameraView.FACING_FRONT) {
+                        if (pictureCallback != null)
+                            pictureCallback.onPictureTaken(mirrorBitmap(bitmap),
+                                    -(orientationCalculator.getOrientation() + getCameraDefaultOrientation()));
+                    } else {
+                        if (pictureCallback != null) pictureCallback.onPictureTaken(bitmap,
+                                -(orientationCalculator.getOrientation() + getCameraDefaultOrientation()));
+                    }
                 }
-            }
-        });
+            });
+        }
+        if(pictureTakenCallbackForByteArray !=null){
+            pictureTakenCallbackForByteArray.onPictureTaken(data, -(orientationCalculator.getOrientation() + getCameraDefaultOrientation()));
+        }
     }
 
     public void setPixelsPerOneZoomLevel (int pixels) {
@@ -232,6 +243,10 @@ public abstract class CameraViewImpl implements SensorEventListener {
 
     public interface OnFrameListener {
         void onFrame (byte[] data, int width, int height, int rotationDegrees);
+    }
+
+    public interface OnPictureTakenListenerForByteArray{
+        void onPictureTaken(byte[]data,int orientation);
     }
 
 }
