@@ -62,6 +62,8 @@ public class CameraView extends FrameLayout {
     /** Flash will be fired automatically when required. */
     public static final int FLASH_AUTO = Constants.FLASH_AUTO;
 
+    private PreviewImpl preview;
+
     /** Flash will be fired in red-eye reduction mode. */
     public static final int FLASH_RED_EYE = Constants.FLASH_RED_EYE;
 
@@ -70,7 +72,7 @@ public class CameraView extends FrameLayout {
     public @interface Flash {
     }
 
-    CameraViewImpl mImpl;
+    private CameraViewImpl mImpl;
 
     private boolean mAdjustViewBounds;
     private boolean mZoomEnabled = true;
@@ -141,6 +143,14 @@ public class CameraView extends FrameLayout {
 
     }
 
+    public PreviewImpl getPreview() {
+        return preview;
+    }
+
+    public void setPreview(PreviewImpl preview) {
+        this.preview = preview;
+    }
+
     @NonNull
     private PreviewImpl createPreviewImpl(Context context, boolean isLegacy) {
         PreviewImpl preview;
@@ -150,6 +160,7 @@ public class CameraView extends FrameLayout {
             preview = new TextureViewPreview(context, this);
         }
         return preview;
+
     }
 
     @Override
@@ -225,6 +236,15 @@ public class CameraView extends FrameLayout {
                             MeasureSpec.EXACTLY),
                     MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
         }
+    }
+
+
+    public CameraViewImpl getmImpl() {
+        return mImpl;
+    }
+
+    public void setmImpl(CameraViewImpl mImpl) {
+        this.mImpl = mImpl;
     }
 
     //Handle Pinch Zoom
@@ -430,6 +450,11 @@ public class CameraView extends FrameLayout {
     public void setOnPictureTakenListener (CameraViewImpl.OnPictureTakenListener pictureTakenListener) {
         if (mImpl != null) {
             mImpl.setOnPictureTakenListener(pictureTakenListener);
+        }
+    }
+    public void setOnPictureTakenByteArrayListener(CameraViewImpl.OnPictureTakenListenerForByteArray onPictureTakenByteArrayListener){
+        if(mImpl != null){
+            mImpl.setPictureTakenForByteArray(onPictureTakenByteArrayListener);
         }
     }
 
