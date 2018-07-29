@@ -9,5 +9,3 @@
 .idea/
 !.idea/copyright/*.xml
 !.idea/codeStyleSettings.xml
-
-cameraviewplus/build\.gradle

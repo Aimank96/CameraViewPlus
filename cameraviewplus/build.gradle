@@ -53,23 +53,22 @@ dependencies {
 
 ext {
     bintrayRepo = 'maven'
-    bintrayName = 'aimanCameraViewPlus'
+    bintrayName = 'CameraViewPlus'
 
-    publishedGroupId = 'com.aiman.android'
-    libraryName = 'aimanCameraViewPlus'
+    publishedGroupId = 'com.asksira.android'
+    libraryName = 'CameraViewPlus'
     artifact = 'cameraviewplus'
 
     libraryDescription = "An improved version of Google's CameraView."
 
-    siteUrl = "none"
-    gitUrl = 'https://github.com/Aimank96/CameraViewPlus.git'
+    siteUrl = 'https://github.com/siralam/CameraViewPlus'
+    gitUrl = 'https://github.com/siralam/CameraViewPlus.git'
 
-    libraryVersion = '0.0.1'
+    libraryVersion = '0.9.4'
 
     developerId = 'siralam'
-
-    developerName = 'Aiman kamal'
-    developerEmail = 'aimank96@gmail.com'
+    developerName = 'Sira Lam'
+    developerEmail = 'sira.swlam@gmail.com'
 
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
